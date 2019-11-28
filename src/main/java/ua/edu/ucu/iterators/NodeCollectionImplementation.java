@@ -2,20 +2,24 @@ package ua.edu.ucu.iterators;
 
 import ua.edu.ucu.Node;
 import ua.edu.ucu.queue.Queue;
-
 import java.util.Arrays;
-//import ua.edu.ucu.tries.RWayTrie.Node;
 
 
+/**
+ * The type Node collection implementation.
+ */
 public class NodeCollectionImplementation implements NodeCollection{
-
-
+    /**
+     * The Queue.
+     */
     public Queue<String> queue;
 
+    /**
+     * Instantiates a new Node collection implementation.
+     */
     public NodeCollectionImplementation() {
         this.queue = new Queue<>();
     }
-
 
     @Override
     public void addNodeToTrie(Node node, String pref) {
@@ -30,10 +34,6 @@ public class NodeCollectionImplementation implements NodeCollection{
             }
         }
     }
-
-//    public Queue<String> getQueue(){
-//
-//    }
 
     @Override
     public NodeIterator iterator() {

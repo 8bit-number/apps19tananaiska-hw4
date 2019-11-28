@@ -7,20 +7,29 @@ import ua.edu.ucu.Node;
 import ua.edu.ucu.iterators.*;
 
 
+/**
+ * The class, representing the R way trie.
+ */
 public class RWayTrie implements Trie {
     private Node root;
     private int wordsNumber;
 
+    /**
+     * Get the weight of the word.
+     *
+     * @param word the word
+     * @return the integer
+     */
     public Integer get(String word) {
         Node x = get(root, word, 0);
         if (x == null) return null;
         return x.val;
     }
 
-    private Node get(Node x, String key, int d) { // Return value associated with key in the subtrie rooted at x.
+    private Node get(Node x, String key, int d) {
         if (x == null) return null;
         if (d == key.length()) return x;
-        char c = key.charAt(d); // Use dth key char to identify subtrie.
+        char c = key.charAt(d);
         return get(x.next[c - 'a'], key, d + 1);
     }
 
@@ -38,7 +47,7 @@ public class RWayTrie implements Trie {
             x.val = val;
             return x;
         }
-        char c = key.charAt(d); // Use dth key char to identify subtrie.
+        char c = key.charAt(d);
         x.next[c - 'a'] = put(x.next[c - 'a'], key, val, d + 1);
         return x;
     }
@@ -60,6 +69,14 @@ public class RWayTrie implements Trie {
         return false;
     }
 
+    /**
+     * Delete node.
+     *
+     * @param x   the x
+     * @param key the key
+     * @param d   the d
+     * @return the node
+     */
     public Node delete(Node x, String key, int d) {
         if (x == null) return null;
         if (d == key.length()) x.val = null;
@@ -83,35 +100,22 @@ public class RWayTrie implements Trie {
 
     @Override
     public Iterable<String> wordsWithPrefix(String pref) {
-        NodeCollection ncoll = new NodeCollectionImplementation();
-        ncoll.addNodeToTrie(get(root, pref, 0), pref);
-        List<String> lst = new ArrayList<>();
-        NodeIterator nodeIterator = ncoll.iterator();
-        while (!nodeIterator.hasNext()) {
-            Object n = nodeIterator.next();
-            lst.add((String) n);
+        if (pref.length() > 2) {
+            NodeCollection ncoll = new NodeCollectionImplementation();
+            ncoll.addNodeToTrie(get(root, pref, 0), pref);
+            List<String> lst = new ArrayList<>();
+            NodeIterator nodeIterator = ncoll.iterator();
+            while (!nodeIterator.hasNext()) {
+                Object n = nodeIterator.next();
+                lst.add((String) n);
+            }
+            return lst;
         }
-        return lst;
+        return null;
     }
-
 
     @Override
     public int size() {
         return this.wordsNumber;
     }
-
-//    public static void main(String[] args) {
-//        RWayTrie rr = new RWayTrie();
-//        rr.add(new Tuple("aaa", 3));
-//        rr.add(new Tuple("bb", 2));
-//        rr.add(new Tuple("aab", 3));
-//        rr.add(new Tuple("aaabb", 5));
-//        Iterable<String> x = rr.wordsWithPrefix("aa");
-//        System.out.println(x);
-////        for (String i : x){
-////            System.out.println((String) i);
-////        }
-//
-//    }
-//
 }
