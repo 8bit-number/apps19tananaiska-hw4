@@ -1,8 +1,6 @@
 package ua.edu.ucu.autocomplete;
 
 import ua.edu.ucu.tries.*;
-import ua.edu.ucu.iterators.MainIterator;
-import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -24,7 +22,7 @@ public class PrefixMatches {
             for (String el : newStr) {
                 if (el.length() > 2) {
                     totalResult++;
-                    trie.add(new Tuple(el, el.length()));
+                    this.trie.add(new Tuple(el, el.length()));
                 }
             }
         }
@@ -44,9 +42,8 @@ public class PrefixMatches {
     }
 
     public Iterable<String> wordsWithPrefix(String pref, int k) {
-
         List<String> newList = new ArrayList<>();
-        Iterable<String> lst = wordsWithPrefix(pref);
+        Iterable<String> lst = this.trie.wordsWithPrefix(pref);
         for (String e : lst) {
             newList.add(e);
         }
@@ -54,18 +51,25 @@ public class PrefixMatches {
         Collections.sort(newList, (o1, o2) -> {
             return  (o1.length() - o2.length());
         });
+
         List<String> fin = new ArrayList<>();
 
         for (int i= 0; i <= k; i++) {
             fin.add(newList.get(i));
         }
         return fin;
+
     }
+
 
 //    public static void main(String[] args) {
 //
 //        PrefixMatches pm = new PrefixMatches(new RWayTrie());
 //        pm.load("abc", "abce", "abcd", "abcde", "abcdef");
 //        System.out.println(pm.wordsWithPrefix("abc", 3));
+////
+//    }
+//    public int size() {
+//        throw new UnsupportedOperationException("Not supported yet.");
 //    }
 }

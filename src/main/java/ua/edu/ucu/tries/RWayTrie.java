@@ -1,20 +1,15 @@
 package ua.edu.ucu.tries;
 
-import ua.edu.ucu.queue.Queue;
-import ua.edu.ucu.iterators.MainIterator;
+
 import java.util.*;
+
+import ua.edu.ucu.Node;
+import ua.edu.ucu.iterators.*;
 
 
 public class RWayTrie implements Trie {
     private Node root;
     private int wordsNumber;
-
-    private static class Node {
-        private Integer val;
-        private Node[] next = new Node[26];
-
-    }
-
 
     public Integer get(String word) {
         Node x = get(root, word, 0);
@@ -22,10 +17,10 @@ public class RWayTrie implements Trie {
         return x.val;
     }
 
-    private Node get(Node x, String key, int d) {
+    private Node get(Node x, String key, int d) { // Return value associated with key in the subtrie rooted at x.
         if (x == null) return null;
         if (d == key.length()) return x;
-        char c = key.charAt(d);
+        char c = key.charAt(d); // Use dth key char to identify subtrie.
         return get(x.next[c - 'a'], key, d + 1);
     }
 
@@ -88,27 +83,17 @@ public class RWayTrie implements Trie {
 
     @Override
     public Iterable<String> wordsWithPrefix(String pref) {
-        Queue q = new Queue();
-        List<String> newList = new ArrayList<>();
-        collect(get(root, pref, 0), pref, q);
-        int size = q.size();
-        for (int i = 0; i < size; i++) {
-            newList.add((String) q.dequeue());
+        NodeCollection ncoll = new NodeCollectionImplementation();
+        ncoll.addNodeToTrie(get(root, pref, 0), pref);
+        List<String> lst = new ArrayList<>();
+        NodeIterator nodeIterator = ncoll.iterator();
+        while (!nodeIterator.hasNext()) {
+            Object n = nodeIterator.next();
+            lst.add((String) n);
         }
-        return newList;
-        }
-
-    private void collect(Node x, String pref, Queue q) {
-        if (x == null) {
-            return ;
-        }
-        if (x.val != null) {
-            q.enqueue(pref);
-        }
-        for (char c = 0; c < x.next.length; c++) {
-            collect(x.next[c], pref + ((char) (c + 'a')), q);
-        }
+        return lst;
     }
+
 
     @Override
     public int size() {
@@ -121,11 +106,12 @@ public class RWayTrie implements Trie {
 //        rr.add(new Tuple("bb", 2));
 //        rr.add(new Tuple("aab", 3));
 //        rr.add(new Tuple("aaabb", 5));
-//        Iterable<String> x =  rr.wordsWithPrefix("aa");
-//        for (String i : x){
-//            System.out.println((String) i);
-//        }
+//        Iterable<String> x = rr.wordsWithPrefix("aa");
+//        System.out.println(x);
+////        for (String i : x){
+////            System.out.println((String) i);
+////        }
 //
 //    }
-
+//
 }
